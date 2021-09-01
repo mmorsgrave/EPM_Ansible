@@ -1,0 +1,38 @@
+---
+- name: Install webserver apache
+  hosts: all
+
+  tasks:
+    - name: install webserver
+      package: 
+        name: "{{ web_server }}"
+        state: present
+
+    - name: enable service
+      service: 
+        name: "{{ web_server }}"
+        enabled: yes
+
+    - name: start service
+      service: 
+        name: "{{ web_server }}"
+        state: started
+
+    - name: create file index.html
+      copy:
+        dest: /var/www/html/index.html
+        content: 'Welcome to my web server!' 
+
+    - name: enable https firewalld 
+      firewalld:
+        service: https
+        permanent: true
+        state: enabled
+        immediate: yes
+    
+    - name: enable http firewalld
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: yes
