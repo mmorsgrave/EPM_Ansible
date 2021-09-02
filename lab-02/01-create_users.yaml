@@ -1,0 +1,25 @@
+---
+
+- name: Create users
+  hosts: all
+
+  vars:
+    users:
+      - username: Alice
+        comment: alice@example.com
+        password: $6$mGgkObY0DJc6.QTb$m/ZwY13ZxkusfKFhYyx7Na1ES5znOKujXXsLvzlOKDQUqOQCLnz/qBEcRZ4Zip82bcxghAa1E2UkChyNiEVny.
+      - username: Bob
+        comment: bob@example.com
+        password: $6$4W8ri5CEg/ZkkUJZ$moemAxk8ypJOb.9aox.PMzEcWUlNSa8BRSazsU2/0qBM1CKUwJ0i2K/mODpnW50HZiX0Jbr5fjhoQpzbPmN0x/ 
+      - username: Carol
+        password: $6$A9hJ3g.MtWh4nqV1$HfCUlcOliIu21vEfS70qBdHeQOvlnkIg1fVUjU2rvBl51.0Sf2Nu.o0HRL9J/Y1YSYA3tquZA06/JtZKoaBek0
+        comment: bob@example.com
+
+  tasks:
+  - name: Create users account
+    user: 
+      name: "{{ item.username }}"
+      state: present
+      comment: "{{ item.comment }}"
+      password: "{{ item.password }}"
+    loop: "{{ users }}"
